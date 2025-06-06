@@ -1,0 +1,12 @@
+// Test cases for the Team Management API to retrieve data
+@baseUrl = http://localhost:3000
+
+### Test Case 1: Get all teams
+# Expects: 200 OK with an array of all teams
+GET {{baseUrl}}/api/teams
+Accept: application/json
+
+### Test Case 2: Bad URl provided
+# Expects: 404 Not Found
+GET {{baseUrl}}/api/teamss
+Accept: application/json
