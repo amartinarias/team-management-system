@@ -33,10 +33,15 @@ export function useDataServer() {
    */
    const saveTeamName = (teamToSave) => {
     if (!teamToSave) return Promise.reject(new Error('No team provided to save.'));
-    const apiUrl = `http://localhost:3000/api/teams/${teamToSave.id}`;
-    return axios.patch(apiUrl, { name: teamToSave.name }, {
-        headers: { 'Content-Type': 'application/json' }
-    });
+    
+    // --- FAKE API CALL ---
+    const payload = toRaw(teamToSave);
+    const apiUrl = `http://localhost:3000/api/teams/${payload.id}`;
+    
+    console.log(`[FAKE SAVE] Faking PATCH request to ${apiUrl}`);
+    console.log('[FAKE SAVE] Payload:', { name: payload.name });
+    
+    return Promise.resolve();
   };
 
   /**
@@ -47,17 +52,15 @@ export function useDataServer() {
    */
   const saveMember = (teamId, memberToSave) => {
     if (!teamId || !memberToSave) return Promise.reject(new Error('Team ID and member data are required.'));
-console.log("memberToSave", memberToSave)
-    
 
-    const apiUrl = `http://localhost:3000/api/teams/${teamId}/members/${memberToSave}`;
+    const payload = toRaw(memberToSave);
+    const apiUrl = `http://localhost:3000/api/teams/${teamId}/members/${payload.id}`;
+
+    console.log(`[FAKE SAVE] Faking PATCH request to ${apiUrl}`);
+    console.log('[FAKE SAVE] Payload:', payload);
     
-    return axios.patch(apiUrl);
+    return Promise.resolve();
   };
-
-
-
-
 
     return {
         teamData,
