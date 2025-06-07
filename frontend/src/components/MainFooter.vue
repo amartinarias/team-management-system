@@ -1,3 +1,14 @@
+<script setup>
+import { ref } from 'vue';
+
+const icons = ref([
+  'mdi-facebook',
+  'mdi-twitter',
+  'mdi-linkedin',
+  'mdi-instagram',
+]);
+</script>
+
 <template>
         <!-- Footer -->
     <v-footer app class="d-flex flex-column pa-0" elevation="0">
