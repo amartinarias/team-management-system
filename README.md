@@ -39,6 +39,7 @@ Given more time, here are several areas where the application could be significa
 * **Create and Delete Operations:**
     * **UI:** Add "Create Team" and "Add Member" buttons that open dedicated forms or dialogs.
     * **API:** Implement `POST` endpoints on the backend to handle the creation of new teams and members, and `DELETE` endpoints to handle their removal.
+    * Enable Full API Functionality: Transition from the current "read-only" state by fixing the PATCH request functionality, allowing for a fully interactive and persistent user experience.
 
 ### UI/UX Enhancements
 
