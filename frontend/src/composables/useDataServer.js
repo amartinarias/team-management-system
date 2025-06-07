@@ -1,5 +1,5 @@
 // useDataServer.js
-import { ref } from 'vue';
+import { ref,toRaw } from 'vue';
 import axios from 'axios';
 
 
@@ -31,11 +31,12 @@ export function useDataServer() {
    * @param {object} teamToSave - The full team object with the updated name.
    * @returns {Promise} The axios promise for the PATCH request.
    */
-  const saveTeamName = (teamToSave) => {
+   const saveTeamName = (teamToSave) => {
     if (!teamToSave) return Promise.reject(new Error('No team provided to save.'));
     const apiUrl = `http://localhost:3000/api/teams/${teamToSave.id}`;
-    // We only need to send the name property for this update.
-    return axios.patch(apiUrl, { name: teamToSave.name });
+    return axios.patch(apiUrl, { name: teamToSave.name }, {
+        headers: { 'Content-Type': 'application/json' }
+    });
   };
 
   /**
@@ -46,9 +47,17 @@ export function useDataServer() {
    */
   const saveMember = (teamId, memberToSave) => {
     if (!teamId || !memberToSave) return Promise.reject(new Error('Team ID and member data are required.'));
-    const apiUrl = `http://localhost:3000/api/teams/${teamId}/members/${memberToSave.id}`;
-    return axios.patch(apiUrl, memberToSave);
+console.log("memberToSave", memberToSave)
+    
+
+    const apiUrl = `http://localhost:3000/api/teams/${teamId}/members/${memberToSave}`;
+    
+    return axios.patch(apiUrl);
   };
+
+
+
+
 
     return {
         teamData,

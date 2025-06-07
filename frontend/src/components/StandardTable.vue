@@ -20,7 +20,15 @@ const props = defineProps({
   fetchTeams: {
     type: Function,
     required: true,
-  }
+  },
+  saveMember: {
+    type: Function,
+    required: true,
+  },
+  saveTeamName: {
+    type: Function,
+    required: true,
+  },
 });
 
 const search = ref('');
@@ -74,6 +82,8 @@ const handleSaveMember = async (memberToSave) => {
   if (!selectedTeam.value) return;
   try {
     // Call the save function from props, providing the necessary teamId
+    console.log('Saving member:', memberToSave);
+    console.log('Selected team:', selectedTeam.value);
     await props.saveMember(selectedTeam.value.id, memberToSave);
     await props.fetchTeams();
     alert('Member saved!');

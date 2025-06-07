@@ -35,44 +35,73 @@ app.patch('/api/teams/:id', (req, res) => {
     const teamId = parseInt(req.params.id);
     const { name } = req.body;
 
+     if (!name) {
+        return res.status(400).json({ error: 'Team name is required' });
+    }
+
     const teamIndex = teamsData.findIndex(t => t.id === teamId);
 
     if (teamIndex === -1) {
         return res.status(404).json({ error: 'Team not found' });
     }
 
-    if (!name) {
-        return res.status(400).json({ error: 'Team name is required' });
-    }
-
-    // Update the team name
     teamsData[teamIndex].name = name;
-
     res.status(200).json(teamsData[teamIndex]);
 });
 
 // PATCH Update a team member's info
-app.patch('/api/teams/:teamId/members/:memberId', (req, res) => {
-    const teamId = parseInt(req.params.teamId);
-    const memberId = parseInt(req.params.memberId);
-    const { name, role, email } = req.body;
+app.patch('/api/teams/:teamId/members/:memberToSave', (req, res) => {
+ console.log(`\n--- Received PATCH request for member ---`);
+    try {
+        const teamId = req.params.teamId;
+        const memberToSave = req.params.memberToSave;
+        
+        // console.log(`[DEBUG] Parsing IDs: teamId=${teamId}, memberId=${memberId}`);
+        // console.log(`[DEBUG] Received request body:`, req.body);
+        console.log("req.body", memberToSave)
+        
+        // --- ROBUSTNESS FIX ---
+        // Check if req.body exists. If not, the JSON middleware likely didn't run.
+        if (!req.body) {
+            console.error('[ERROR] Request body is missing. This is often due to a missing "Content-Type: application/json" header from the client.');
+            return res.status(400).json({ error: 'Request body is missing or not in JSON format.' });
+        }
+        const { name, role, email } = req.body;
 
-    const team = teamsData.find(t => t.id === teamId);
-    if (!team) {
-        return res.status(404).json({ error: 'Team not found' });
+        const team = teamsData.find(t => t.id === teamId);
+        if (!team) {
+            console.error(`[ERROR] Team with ID ${teamId} not found.`);
+            return res.status(404).json({ error: 'Team not found' });
+        }
+        console.log(`[DEBUG] Found team in database: "${team.name}"`);
+
+        if (!team.members || !Array.isArray(team.members)) {
+            console.error(`[ERROR] Team ${teamId} does not have a valid 'members' array.`);
+            return res.status(500).json({ error: 'Server error: Team members data is corrupted.' });
+        }
+
+        const memberIndex = team.members.findIndex(m => m.id === memberId);
+        if (memberIndex === -1) {
+            console.error(`[ERROR] Member with ID ${memberId} not found in team "${team.name}".`);
+            return res.status(404).json({ error: 'Member not found' });
+        }
+        console.log(`[DEBUG] Found member "${team.members[memberIndex].name}" at index: ${memberIndex}`);
+
+        // Update member details
+        console.log(`[DEBUG] Updating member...`);
+        if (name !== undefined) team.members[memberIndex].name = name;
+        if (role !== undefined) team.members[memberIndex].role = role;
+        if (email !== undefined) team.members[memberIndex].email = email;
+        
+        console.log(`[SUCCESS] Member updated successfully.`);
+        res.status(200).json(team.members[memberIndex]);
+
+    } catch (error) {
+        console.error("\n--- SERVER CRASH ---");
+        console.error("The request failed inside the 'try' block. See details below:");
+        console.error(error);
+        res.status(500).json({ error: 'An unexpected error occurred on the server.' });
     }
-
-    const memberIndex = team.members.findIndex(m => m.id === memberId);
-    if (memberIndex === -1) {
-        return res.status(404).json({ error: 'Member not found' });
-    }
-
-    // Update member details
-    if (name) team.members[memberIndex].name = name;
-    if (role) team.members[memberIndex].role = role;
-    if (email) team.members[memberIndex].email = email;
-
-    res.status(200).json(team.members[memberIndex]);
 });
 
 // --- Start the Server ---
