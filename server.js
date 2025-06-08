@@ -24,7 +24,7 @@ let teamsData = [
 
 // GET- Retrieve all teams
 app.get('/api/teams', (req, res) => {
-    // Add a small delay to simulate a real network request
+    // small delay to simulate a real network request
     setTimeout(() => {
         res.status(200).json(teamsData);
     }, 500);
@@ -53,20 +53,8 @@ app.patch('/api/teams/:id', (req, res) => {
 app.patch('/api/teams/:teamId/members/:memberToSave', (req, res) => {
     try {
         const teamId = req.params.teamId;
-<<<<<<< Updated upstream
-        const memberToSave = req.params.memberToSave;
-        
-        // console.log(`[DEBUG] Parsing IDs: teamId=${teamId}, memberId=${memberId}`);
-        // console.log(`[DEBUG] Received request body:`, req.body);
-        console.log("req.body", memberToSave)
-        console.log("req.body", req.body)
-        
-        // --- ROBUSTNESS FIX ---
-        // Check if req.body exists. If not, the JSON middleware likely didn't run.
-=======
         const memberId = req.params.memberToSave;
 
->>>>>>> Stashed changes
         if (!req.body) {
             return res.status(400).json({ error: 'Request body is missing or not in JSON format.' });
         }

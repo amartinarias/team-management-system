@@ -69,7 +69,6 @@ const closeDialog = () => {
 const handleSaveTeamName = async (teamToSave) => {
   try {
     await props.saveTeamName(teamToSave);
-    // After saving, call the fetch function from props to refresh the data
     await props.fetchTeams();
     alert('Team name saved!');
   } catch (error) {
