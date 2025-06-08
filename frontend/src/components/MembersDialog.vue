@@ -27,13 +27,13 @@
         density="compact"
       >
         <template v-slot:item.name="{ item }">
-          <v-text-field v-model="item.name" density="compact" hide-details variant="flat"></v-text-field>
+          <v-text-field v-model="item.name" density="compact" hide-details ></v-text-field>
         </template>
         <template v-slot:item.role="{ item }">
-          <v-text-field v-model="item.role" density="compact" hide-details variant="flat"></v-text-field>
+          <v-text-field v-model="item.role" density="compact" hide-details ></v-text-field>
         </template>
         <template v-slot:item.email="{ item }">
-          <v-text-field v-model="item.email" density="compact" hide-details variant="flat"></v-text-field>
+          <v-text-field v-model="item.email" density="compact" hide-details ></v-text-field>
         </template>
         <!-- This button emits an event with the specific member object to save -->
         <template v-slot:item.actions="{ item }">
