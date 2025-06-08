@@ -59,6 +59,7 @@ app.patch('/api/teams/:teamId/members/:memberToSave', (req, res) => {
         // console.log(`[DEBUG] Parsing IDs: teamId=${teamId}, memberId=${memberId}`);
         // console.log(`[DEBUG] Received request body:`, req.body);
         console.log("req.body", memberToSave)
+        console.log("req.body", req.body)
         
         // --- ROBUSTNESS FIX ---
         // Check if req.body exists. If not, the JSON middleware likely didn't run.

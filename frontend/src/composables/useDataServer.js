@@ -50,16 +50,19 @@ export function useDataServer() {
    * @param {object} memberToSave - The full member object with updated details.
    * @returns {Promise} The axios promise for the PATCH request.
    */
-  const saveMember = (teamId, memberToSave) => {
+  const saveMember = async(teamId, memberToSave) => {
     if (!teamId || !memberToSave) return Promise.reject(new Error('Team ID and member data are required.'));
-
+console.log("memberToSave", memberToSave)
     const payload = toRaw(memberToSave);
-    const apiUrl = `http://localhost:3000/api/teams/${teamId}/members/${payload.id}`;
+    console.log("payload", payload)
 
+    const apiUrl = `http://localhost:3000/api/teams/${teamId}/members/${payload.id}`;
+console.log("apiUrl", apiUrl)
+    await axios.patch(apiUrl, payload);
     console.log(`[FAKE SAVE] Faking PATCH request to ${apiUrl}`);
     console.log('[FAKE SAVE] Payload:', payload);
     
-    return Promise.resolve();
+    // return Promise.resolve();
   };
 
     return {
